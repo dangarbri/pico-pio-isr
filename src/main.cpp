@@ -26,9 +26,8 @@
 #include "pico/stdlib.h"
 
 #include "simply_isr.pio.h"
-// the sdk doesn't give us functions for figuring out which
-// isr source we're using, so we have to do it manually.
-#include "hardware/regs/pio.h"
+#include "pico.h"
+#include "hardware/structs/pio.h"
 
 /**
  * These defines represent each state machine.
@@ -56,42 +55,17 @@
 volatile uint32_t irq_flags = 0;
 
 /**
- * Reads a hardware register
- *
- * @note See datasheet and/or pico-sdk/src/rp2040/include/hardware/regs
- *       for base addresses and offsets
- * @param[in] bank The base address of the register set usually <MODULE>_BASE
- * @param[in] offset The register offset, usually <REG_NAME>_OFFSET
- */
-uint32_t read_register(uint32_t bank, uint32_t offset) {
-    return *((volatile io_rw_32*)(bank + offset));
-}
-
-/**
- * Writes a hardware register
- *
- * @note See datasheet and/or pico-sdk/src/rp2040/include/hardware/regs
- *       for base addresses and offsets
- * @param[in] bank The base address of the register set usually <MODULE>_BASE
- * @param[in] offset The register offset, usually <REG_NAME>_OFFSET
- * @param[in] value The value to write to the register
- */
-void write_register(uint32_t bank, uint32_t offset, uint32_t value) {
-    *((volatile io_rw_32*)(bank + offset)) = value;
-}
-
-/**
  * This function is called when the IRQ is fired by the state machine.
  * @note See enable_pio_isrs for how to register this function to be called
  */
 void simply_isr_handler() {
     // Read the IRQ register to get the IRQ flags from the state machine
     // This tells me which state machine sent the IRQ
-    irq_flags = read_register(PIO0_BASE, PIO_IRQ_OFFSET);
+    irq_flags = pio0_hw->irq;
     
     // IRQ_OFFSET is write 1 to clear, so by writing back the
     // value, we're acknowledging that we've serviced the interrupt.
-    write_register(PIO0_BASE, PIO_IRQ_OFFSET, irq_flags);
+    hw_clear_bits(&pio0_hw->irq, irq_flags);
 }
 
 /**
