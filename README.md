@@ -5,6 +5,7 @@ See `src/main.cpp` for how to enable and respond to ISRs.
 See `src/simply_isr.pio` for the assembly to fire a unique ISR per state machine.
 
 ## Output
+```
 Triggering ISR from state machine 0
 Expected IRQ flags: 0x00000001
 Actual IRQ Flags: 0x00000001
@@ -17,4 +18,4 @@ Actual IRQ Flags: 0x00000004
 Triggering ISR from state machine 3
 Expected IRQ flags: 0x00000008
 Actual IRQ Flags: 0x00000008
-
+```
