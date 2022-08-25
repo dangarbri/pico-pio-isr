@@ -1,7 +1,20 @@
-# Pico Project Template
+# Pico PIO ISR Example
 
-This is my template for a Raspberry Pi Pico program template.
-It includes a src, test, and docs directory.
-CMake files for building are present with the pico sdk initialization.
-Doxygen files are present for code documentation and this README is included as the main page.
+This is an example of how to use ISRs from the PIO on the Raspberry PI Pico.
+See `src/main.cpp` for how to enable and respond to ISRs.
+See `src/simply_isr.pio` for the assembly to fire a unique ISR per state machine.
+
+## Output
+Triggering ISR from state machine 0
+Expected IRQ flags: 0x00000001
+Actual IRQ Flags: 0x00000001
+Triggering ISR from state machine 1
+Expected IRQ flags: 0x00000002
+Actual IRQ Flags: 0x00000002
+Triggering ISR from state machine 2
+Expected IRQ flags: 0x00000004
+Actual IRQ Flags: 0x00000004
+Triggering ISR from state machine 3
+Expected IRQ flags: 0x00000008
+Actual IRQ Flags: 0x00000008
 
